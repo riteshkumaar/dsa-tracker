@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My DSA Tracker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1c1f2b;
+            background-image: url('https://example.com/background-image.jpg'); /* Replace with your image URL */
+            background-size: cover;
+            background-position: center;
+            color: #c7d1e0;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #23293a;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        nav a {
+            color: #c7d1e0;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: normal;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            padding: 100px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #76a5d6;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            font-weight: normal;
+        }
+
+        .assignment {
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #2a2f3d;
+            color: #c7d1e0;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .assignment:hover {
+            background-color: #33415c;
+            transform: translateY(-5px);
+        }
+
+        .assignment.done {
+            background-color: #4a9060;
+            font-weight: normal;
+        }
+
+        .assignment.locked {
+            background-color: #2a2f3d;
+            color: #7f8c99;
+            font-style: italic;
+            cursor: not-allowed;
+        }
+
+        .assignment-details {
+            display: none;
+            margin-top: 15px;
+            font-size: 1em;
+            color: #a5b0c1;
+            line-height: 1.5;
+        }
+
+        .assignment.active .assignment-details {
+            display: block;
+        }
+
+        .timer {
+            margin-top: 10px;
+            font-weight: normal;
+            color: #e74c3c;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #76a5d6;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #6092c1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #23293a;
+            color: #c7d1e0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#assignments">Assignments</a>
+        <a href="#progress">Progress</a>
+        <a href="#resources">Resources</a>
+    </nav>
+    <div class="container">
+        <h1>My DSA Tracker</h1>
+        <div class="assignment pending" onclick="toggleDetails(this)">
+            Day 1 - 11th August 2024 - Learn Recursion and Solve Subset Sum Problem
+            <div class="assignment-details">
+                <div class="card">
+                    <p><strong>Task:</strong> Learn the basics of recursion and apply them by solving the Subset Sum problem on LeetCode.</p>
+                    <a href="https://leetcode.com/problems/subset-sum/" target="_blank" class="btn">Solve on LeetCode</a>
+                    <div class="btn" onclick="markAsDone(this)">Mark as Done</div>
+                </div>
+                <div class="timer" id="timer"></div>
+            </div>
+        </div>
+        <div class="assignment locked" onclick="toggleDetails(this)">
+            12th August 2024 - Locked
+            <div class="assignment-details">Details about the assignment.</div>
+        </div>
+        <div class="assignment locked" onclick="toggleDetails(this)">
+            13th August 2024 - Locked
+            <div class="assignment-details">Details about the assignment.</div>
+        </div>
+        <!-- Add more assignments here -->
+    </div>
+    <footer>
+        &copy; 2024 My DSA Tracker. All rights reserved.
+    </footer>
+
+    <script>
+        function toggleDetails(element) {
+            if (!element.classList.contains('locked')) {
+                element.classList.toggle('active');
+            }
+        }
+
+        function markAsDone(buttonElement) {
+            const assignmentElement = buttonElement.closest('.assignment');
+            assignmentElement.classList.remove('pending');
+            assignmentElement.classList.add('done');
+            buttonElement.style.display = 'none';  // Hide the "Mark as Done" button
+        }
+
+        function updateTimer() {
+            const deadline = new Date("August 11, 2024 23:59:59").getTime();
+            const now = new Date().getTime();
+            const timeRemaining = deadline - now;
+
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (timeRemaining < 0) {
+                clearInterval(timerInterval);
+                document.getElementById("timer").innerHTML = "Deadline Passed";
+            }
+        }
+
+        const timerInterval = setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
